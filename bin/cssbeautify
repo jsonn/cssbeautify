@@ -36,6 +36,7 @@ function showUsage() {
     console.log();
     console.log('Available options:');
     console.log();
+    console.log('  --indent=<val> Indent content with string <val>');
     console.log('  -v, --version  Shows program version');
     console.log();
     process.exit(1);
@@ -56,6 +57,8 @@ process.argv.splice(2).forEach(function (entry) {
         console.log('CSS Beautify version 0.3.0');
         console.log();
         process.exit(0);
+    } else if (entry.slice(0,9) === '--indent=') {
+        options.indent = entry.slice(9);
     } else if (entry.slice(0, 2) === '--') {
         console.log('Error: unknown option ' + entry + '.');
         process.exit(1);
@@ -74,7 +77,7 @@ if (typeof fname !== 'string') {
 
 try {
     content = fs.readFileSync(fname, 'utf-8');
-    style = cssbeautify(content);
+    style = cssbeautify(content, options);
     console.log(style);
 } catch (e) {
     console.log('Error: ' + e.message);
